@@ -108,6 +108,25 @@
             box-shadow: 1px 1px 0px #000;
             transform: translate(1px, 1px);
         }
+
+        /* Bloque de resumen ordenado */
+        .resumen-lista {
+            background: #fff;
+            border: 2px solid #000;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+            box-shadow: 3px 3px 0px #000;
+        }
+        .resumen-item {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
     </style>
 </head>
 <body>
@@ -153,15 +172,15 @@
             <div class="cat-container">🐱🍕</div>
             <h2>¿Qué se te antoja comer?</h2>
             <div class="grid-options">
-                <div class="option-box" onclick="selectItem(this)"><span>🍕</span>pizza</div>
-                <div class="option-box" onclick="selectItem(this)"><span>🍣</span>japonesa</div>
-                <div class="option-box" onclick="selectItem(this)"><span>🌮</span>tacos</div>
-                <div class="option-box" onclick="selectItem(this)"><span>🍔</span>burger</div>
-                <div class="option-box" onclick="selectItem(this)"><span>🍝</span>pasta</div>
-                <div class="option-box" onclick="selectItem(this)"><span>🍜</span>coreana</div>
-                <div class="option-box" onclick="selectItem(this)"><span>🧁</span>postre</div>
-                <div class="option-box" onclick="selectItem(this)"><span>☕</span>café</div>
-                <div class="option-box" onclick="selectItem(this)"><span>🥞</span>brunch</div>
+                <div class="option-box" onclick="selectItem(this, 'comida', 'Pizza 🍕')"><span>🍕</span>pizza</div>
+                <div class="option-box" onclick="selectItem(this, 'comida', 'Japonesa 🍣')"><span>🍣</span>japonesa</div>
+                <div class="option-box" onclick="selectItem(this, 'comida', 'Tacos 🌮')"><span>🌮</span>tacos</div>
+                <div class="option-box" onclick="selectItem(this, 'comida', 'Burgers 🍔')"><span>🍔</span>burger</div>
+                <div class="option-box" onclick="selectItem(this, 'comida', 'Pasta 🍝')"><span>🍝</span>pasta</div>
+                <div class="option-box" onclick="selectItem(this, 'comida', 'Coreana 🍜')"><span>🍜</span>coreana</div>
+                <div class="option-box" onclick="selectItem(this, 'comida', 'Postre 🧁')"><span>🧁</span>postre</div>
+                <div class="option-box" onclick="selectItem(this, 'comida', 'Café ☕')"><span>☕</span>café</div>
+                <div class="option-box" onclick="selectItem(this, 'comida', 'Brunch 🥞')"><span>🥞</span>brunch</div>
             </div>
             <button class="next-btn" onclick="irAlPaso4()">Siguiente ➔</button>
         </div>
@@ -172,78 +191,49 @@
             <div class="cat-container">🐱🥂</div>
             <h2>¿Y para tomar? 🥂</h2>
             <div class="grid-options">
-                <div class="option-box" onclick="selectItem(this)"><span>🍷</span>Vinos</div>
-                <div class="option-box" onclick="selectItem(this)"><span>🍺</span>Cerveza</div>
-                <div class="option-box" onclick="selectItem(this)"><span>🍹</span>Trago</div>
-                <div class="option-box" onclick="selectItem(this)"><span>🍶</span>Sake</div>
-                <div class="option-box" onclick="selectItem(this)"><span>🍾</span>Soju</div>
-                <div class="option-box" onclick="selectItem(this)"><span>🥤</span>Cualquier otra</div>
+                <div class="option-box" onclick="selectItem(this, 'bebida', 'Vinos 🍷')"><span>🍷</span>Vinos</div>
+                <div class="option-box" onclick="selectItem(this, 'bebida', 'Cerveza 🍺')"><span>🍺</span>Cerveza</div>
+                <div class="option-box" onclick="selectItem(this, 'bebida', 'Trago/Cóctel 🍹')"><span>🍹</span>Trago</div>
+                <div class="option-box" onclick="selectItem(this, 'bebida', 'Sake 🍶')"><span>🍶</span>Sake</div>
+                <div class="option-box" onclick="selectItem(this, 'bebida', 'Soju 🍾')"><span>🍾</span>Soju</div>
+                <div class="option-box" onclick="selectItem(this, 'bebida', 'Cualquier otra 🥤')"><span>🥤</span>Cualquier otra</div>
             </div>
             <button class="next-btn" onclick="irAlPasoFinal()">Confirmar Plan ➔</button>
         </div>
 
-        <!-- PASO 5: LA ÚLTIMA VENTANA FIJA MODIFICADA -->
+        <!-- PASO 5: ÚLTIMA VENTANA CON RESUMEN DINÁMICO -->
         <div id="step5" class="step">
             <span class="tag-step">Confirmado</span>
             <div class="cat-container">🐱🚗💨</div>
             <h2>¡Trato hecho, Astrid! 🎉</h2>
-            <!-- CAMBIO: "cita" por "salida" -->
             <p>¡Nuestra salida ha sido agendada con éxito!</p>
-            <!-- CAMBIO: Frase personalizada del recuadro -->
+            
+            <!-- Lista dinámica que muestra lo que eligió -->
+            <div class="resumen-lista">
+                <div class="resumen-item">📅 Día: <span id="resumenDia"></span></div>
+                <div class="resumen-item">⏰ Hora: <span id="resumenHora"></span></div>
+                <div class="resumen-item">🍕 Plan: <span id="resumenComida"></span></div>
+                <div class="resumen-item">🥤 Bebida: <span id="resumenBebida"></span></div>
+            </div>
+
             <div style="background: #ffe6a3; padding: 15px; border-radius: 12px; border: 2px solid #000; font-weight: bold; margin: 20px 0;">
                 💛 ¡Todo listo para vernos ese día! 💛
             </div>
-            <p style="font-size: 0.9rem; color: #555; margin-top: 25px; font-style: italic;">¡Tómale captura a esta pantalla y envíamelo por mensaje! 😉🔥</p>
+            <p style="font-size: 1.1rem; font-weight: bold; color: #000; margin: 15px 0;">Listo, nos vemos ese día, Astrid :D</p>
+            <p style="font-size: 0.9rem; color: #555; margin-top: 15px; font-style: italic;">¡Tómale captura a esta pantalla y envíamelo por mensaje! 😉🔥</p>
         </div>
     </div>
 
     <script>
         let tamanoSi = 1;
         let clickNo = 0;
+        
+        // Control de elecciones vacías para obligar a seleccionar
+        let eleccionComida = "";
+        let eleccionBebida = "";
+
         const gatosVideo = ["🐱👓", "🙀", "😾", "😭", "🐈🐾"];
 
         function accionNo() {
             clickNo++;
             const btnNo = document.getElementById('btnNo');
-            const btnSi = document.getElementById('btnSi');
-            const gato = document.getElementById('gatoMeme');
-            
-            tamanoSi += 0.35;
-            btnSi.style.transform = "scale(" + tamanoSi + ")";
-            gato.innerText = gatosVideo[clickNo % gatosVideo.length];
-            
-            const x = Math.random() * (window.innerWidth - 120);
-            const y = Math.random() * (window.innerHeight - 80);
-            
-            btnNo.style.position = "fixed";
-            btnNo.style.left = x + "px";
-            btnNo.style.top = y + "px";
-        }
-
-        function irAlPasoIntermedio() {
-            document.getElementById('btnNo').style.position = "absolute"; 
-            nextStep('stepIntermedio');
-        }
-
-        function irAlPaso2() { nextStep('step2'); }
-        function irAlPaso3() { nextStep('step3'); }
-        function irAlPaso4() { nextStep('step4'); }
-        function irAlPasoFinal() { nextStep('step5'); }
-
-        function nextStep(stepId) {
-            document.querySelectorAll('.step').forEach(function(step) {
-                step.classList.remove('active');
-            });
-            document.getElementById(stepId).classList.add('active');
-        }
-
-        function selectItem(element) {
-            const parent = element.parentElement;
-            parent.querySelectorAll('.option-box').forEach(function(opt) {
-                opt.classList.remove('selected');
-            });
-            element.classList.add('selected');
-        }
-    </script>
-</body>
-</html>
