@@ -114,9 +114,30 @@
             background: #b4c6fc;
             transform: scale(0.95);
         }
+        #btnMusica {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: #fffdf0;
+            border: 2px solid #000;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 2px 2px 0px #000;
+            cursor: pointer;
+            z-index: 999;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Cambia "cancion.mp3" por el nombre real de tu archivo si es distinto -->
+    <audio id="cancionFondo" src="cancion.mp3" loop></audio>
+    <button id="btnMusica" onclick="alternarMusica()">🔊</button>
 
     <div class="card">
         <!-- PASO 1: PORTADA -->
@@ -237,6 +258,38 @@
         function irAlPasoIntermedio() {
             document.getElementById('btnNo').style.position = "absolute"; 
             nextStep('stepIntermedio');
+            reproducirMusica();
+        }
+
+        // Intenta reproducir la música. Si el navegador la bloquea, no rompe nada.
+        function reproducirMusica() {
+            try {
+                const audio = document.getElementById('cancionFondo');
+                const promesa = audio.play();
+                if (promesa !== undefined) {
+                    promesa.catch(function() {
+                        // El navegador bloqueó el autoplay, no pasa nada, sigue la página normal
+                    });
+                }
+            } catch (e) {
+                // Si algo falla, no bloqueamos el flujo de la página
+            }
+        }
+
+        function alternarMusica() {
+            try {
+                const audio = document.getElementById('cancionFondo');
+                const btn = document.getElementById('btnMusica');
+                if (audio.paused) {
+                    reproducirMusica();
+                    btn.textContent = "🔊";
+                } else {
+                    audio.pause();
+                    btn.textContent = "🔇";
+                }
+            } catch (e) {
+                // Si algo falla, no bloqueamos el flujo de la página
+            }
         }
 
         function irAlPaso2() {
