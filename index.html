@@ -147,7 +147,7 @@
             <button class="next-btn" onclick="irAlPaso3()">Siguiente ➔</button>
         </div>
 
-        <!-- PASO 3: SELECCIÓN DE COMIDA (Al tocar una casilla avanza automáticamente) -->
+        <!-- PASO 3: SELECCIÓN DE COMIDA -->
         <div id="step3" class="step">
             <span class="tag-step">Paso 2</span>
             <div class="cat-container">🐱🍕</div>
@@ -166,7 +166,7 @@
             </div>
         </div>
 
-        <!-- PASO 4: SELECCIÓN DE BEBIDAS (Al tocar una casilla va al paso final) -->
+        <!-- PASO 4: SELECCIÓN DE BEBIDAS -->
         <div id="step4" class="step">
             <span class="tag-step">Paso 3</span>
             <div class="cat-container">🐱🥂</div>
@@ -182,7 +182,7 @@
             </div>
         </div>
 
-        <!-- PASO 5: LA ÚLTIMA VENTANA FIJA SEGURA -->
+        <!-- PASO 5: LA ÚLTIMA VENTANA CON TU NUEVA FRASE DINÁMICA -->
         <div id="step5" class="step">
             <span class="tag-step">Confirmado</span>
             <div class="cat-container">🐱🚗💨</div>
@@ -193,7 +193,9 @@
                 💛 ¡Todo listo para vernos ese día! 💛
             </div>
             
-            <p style="font-size: 1.2rem; font-weight: bold; color: #000; margin: 20px 0;">Listo, nos vemos ese día, Astrid :D</p>
+            <!-- CAMBIO SOLICITADO AQUÍ: FRASE DINÁMICA SEGURA -->
+            <p id="fraseFinalDinamica" style="font-size: 1.2rem; font-weight: bold; color: #000; margin: 20px 0; line-height: 1.4;"></p>
+            
             <p style="font-size: 0.9rem; color: #555; margin-top: 25px; font-style: italic;">¡Tómale captura a esta pantalla y envíamelo por mensaje! 😉🔥</p>
         </div>
     </div>
@@ -229,14 +231,12 @@
         function irAlPaso2() { nextStep('step2'); }
         function irAlPaso3() { nextStep('step3'); }
         function irAlPaso4() { nextStep('step4'); }
-        function irAlPasoFinal() { nextStep('step5'); }
-
-        function nextStep(stepId) {
-            document.querySelectorAll('.step').forEach(function(step) {
-                step.classList.remove('active');
-            });
-            document.getElementById(stepId).classList.add('active');
-        }
-    </script>
-</body>
-</html>
+        
+        function irAlPasoFinal() {
+            const f = document.getElementById('fechaCita').value;
+            const h = document.getElementById('horaCita').value;
+            
+            // Invierte el formato de fecha AAAA-MM-DD a DD/MM/AAAA de forma ultra básica
+            const a = f.substring(0, 4);
+            const m = f.substring(5, 7);
+            const d = f.substring(8, 10);
