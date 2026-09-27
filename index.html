@@ -108,6 +108,47 @@
             background: #b4c6fc;
             transform: scale(0.95);
         }
+
+        /* Bloque visual del resumen con círculos para los emojis */
+        .resumen-lista {
+            background: white;
+            border: 2px solid #000;
+            border-radius: 16px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+            box-shadow: 3px 3px 0px #000;
+        }
+        .resumen-item {
+            font-size: 1.05rem;
+            font-weight: bold;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #000;
+        }
+        .emoji-circle {
+            background: #ffe6a3;
+            border: 2px solid #000;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        .text-detail {
+            display: flex;
+            flex-direction: column;
+        }
+        .text-detail label {
+            font-size: 0.75rem;
+            color: #666;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
@@ -147,97 +188,61 @@
             <button class="next-btn" onclick="irAlPaso3()">Siguiente ➔</button>
         </div>
 
-        <!-- PASO 3: SELECCIÓN DE COMIDA (Al tocar una casilla avanza automáticamente) -->
+        <!-- PASO 3: SELECCIÓN DE COMIDA -->
         <div id="step3" class="step">
             <span class="tag-step">Paso 2</span>
             <div class="cat-container">🐱🍕</div>
             <h2>¿Qué se te antoja comer?</h2>
             <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">(Toca tu opción favorita para avanzar)</p>
             <div class="grid-options">
-                <div class="option-box" onclick="irAlPaso4()"><span>🍕</span>pizza</div>
-                <div class="option-box" onclick="irAlPaso4()"><span>🍣</span>japonesa</div>
-                <div class="option-box" onclick="irAlPaso4()"><span>🌮</span>tacos</div>
-                <div class="option-box" onclick="irAlPaso4()"><span>🍔</span>burger</div>
-                <div class="option-box" onclick="irAlPaso4()"><span>🍝</span>pasta</div>
-                <div class="option-box" onclick="irAlPaso4()"><span>🍜</span>coreana</div>
-                <div class="option-box" onclick="irAlPaso4()"><span>🧁</span>postre</div>
-                <div class="option-box" onclick="irAlPaso4()"><span>☕</span>café</div>
-                <div class="option-box" onclick="irAlPaso4()"><span>🥞</span>brunch</div>
+                <div class="option-box" onclick="guardarComida('🍕', 'step4')"><span>🍕</span>pizza</div>
+                <div class="option-box" onclick="guardarComida('🍣', 'step4')"><span>🍣</span>japonesa</div>
+                <div class="option-box" onclick="guardarComida('🌮', 'step4')"><span>🌮</span>tacos</div>
+                <div class="option-box" onclick="guardarComida('🍔', 'step4')"><span>🍔</span>burger</div>
+                <div class="option-box" onclick="guardarComida('🍝', 'step4')"><span>🍝</span>pasta</div>
+                <div class="option-box" onclick="guardarComida('🍜', 'step4')"><span>🍜</span>coreana</div>
+                <div class="option-box" onclick="guardarComida('🧁', 'step4')"><span>🧁</span>postre</div>
+                <div class="option-box" onclick="guardarComida('☕', 'step4')"><span>☕</span>café</div>
+                <div class="option-box" onclick="guardarComida('🥞', 'step4')"><span>🥞</span>brunch</div>
             </div>
         </div>
 
-        <!-- PASO 4: SELECCIÓN DE BEBIDAS (Al tocar una casilla va al paso final) -->
+        <!-- PASO 4: SELECCIÓN DE BEBIDAS -->
         <div id="step4" class="step">
             <span class="tag-step">Paso 3</span>
             <div class="cat-container">🐱🥂</div>
             <h2>¿Y para tomar? 🥂</h2>
             <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">(Toca tu opción favorita para avanzar)</p>
             <div class="grid-options">
-                <div class="option-box" onclick="irAlPasoFinal()"><span>🍷</span>Vinos</div>
-                <div class="option-box" onclick="irAlPasoFinal()"><span>🍺</span>Cerveza</div>
-                <div class="option-box" onclick="selectFinalDirecto()"><span>🍹</span>Trago</div>
-                <div class="option-box" onclick="irAlPasoFinal()"><span>🍶</span>Sake</div>
-                <div class="option-box" onclick="irAlPasoFinal()"><span>🍾</span>Soju</div>
-                <div class="option-box" onclick="irAlPasoFinal()"><span>🥤</span>Cualquier otra</div>
+                <div class="option-box" onclick="guardarBebida('🍷')"><span>🍷</span>Vinos</div>
+                <div class="option-box" onclick="guardarBebida('🍺')"><span>🍺</span>Cerveza</div>
+                <div class="option-box" onclick="guardarBebida('🍹')"><span>🍹</span>Trago</div>
+                <div class="option-box" onclick="guardarBebida('🍶')"><span>🍶</span>Sake</div>
+                <div class="option-box" onclick="guardarBebida('🍾')"><span>🍾</span>Soju</div>
+                <div class="option-box" onclick="guardarBebida('🥤')"><span>🥤</span>Cualquier otra</div>
             </div>
         </div>
 
-        <!-- PASO 5: LA ÚLTIMA VENTANA FIJA SEGURA -->
+        <!-- PASO 5: RESUMEN FINAL DINÁMICO REPARADO -->
         <div id="step5" class="step">
             <span class="tag-step">Confirmado</span>
             <div class="cat-container">🐱🚗💨</div>
             <h2>¡Trato hecho, Astrid! 🎉</h2>
             <p>¡Nuestra salida ha sido agendada con éxito!</p>
             
-            <div style="background: #ffe6a3; padding: 15px; border-radius: 12px; border: 2px solid #000; font-weight: bold; margin: 20px 0;">
-                💛 ¡Todo listo para vernos ese día! 💛
-            </div>
-            
-            <p style="font-size: 1.2rem; font-weight: bold; color: #000; margin: 20px 0;">Listo, nos vemos ese día, Astrid :D</p>
-            <p style="font-size: 0.9rem; color: #555; margin-top: 25px; font-style: italic;">¡Tómale captura a esta pantalla y envíamelo por mensaje! 😉🔥</p>
-        </div>
-    </div>
-
-    <script>
-        let tamanoSi = 1;
-        let clickNo = 0;
-        const gatosVideo = ["🐱👓", "🙀", "😾", "😭", "🐈🐾"];
-
-        function accionNo() {
-            clickNo++;
-            const btnNo = document.getElementById('btnNo');
-            const btnSi = document.getElementById('btnSi');
-            const gato = document.getElementById('gatoMeme');
-            
-            tamanoSi += 0.35;
-            btnSi.style.transform = "scale(" + tamanoSi + ")";
-            gato.innerText = gatosVideo[clickNo % gatosVideo.length];
-            
-            const x = Math.random() * (window.innerWidth - 120);
-            const y = Math.random() * (window.innerHeight - 80);
-            
-            btnNo.style.position = "fixed";
-            btnNo.style.left = x + "px";
-            btnNo.style.top = y + "px";
-        }
-
-        function irAlPasoIntermedio() {
-            document.getElementById('btnNo').style.position = "absolute"; 
-            nextStep('stepIntermedio');
-        }
-
-        function irAlPaso2() { nextStep('step2'); }
-        function irAlPaso3() { nextStep('step3'); }
-        function irAlPaso4() { nextStep('step4'); }
-        function irAlPasoFinal() { nextStep('step5'); }
-        function selectFinalDirecto() { nextStep('step5'); }
-
-        function nextStep(stepId) {
-            document.querySelectorAll('.step').forEach(function(step) {
-                step.classList.remove('active');
-            });
-            document.getElementById(stepId).classList.add('active');
-        }
-    </script>
-</body>
-</html>
+            <!-- Resumen ordenado con los emojis dinámicos solicitados -->
+            <div class="resumen-lista">
+                <div class="resumen-item">
+                    <div class="emoji-circle">📅</div>
+                    <div class="text-detail"><label>Día</label><span id="finalDia"></span></div>
+                </div>
+                <div class="resumen-item">
+                    <div class="emoji-circle">⏰</div>
+                    <div class="text-detail"><label>Hora</label><span id="finalHora"></span></div>
+                </div>
+                <div class="resumen-item">
+                    <div class="emoji-circle" id="finalEmojiComida">🍕</div>
+                    <div class="text-detail"><label>Comida elegida</label><span>¡Listísima!</span></div>
+                </div>
+                <div class="resumen-item">
+                    <div class="emoji-circle" id="finalEmojiBebida">🥂</div>
