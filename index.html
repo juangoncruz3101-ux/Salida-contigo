@@ -6,7 +6,7 @@
     <title>¿Salimos? 💛</title>
     <style>
         body {
-            background-color: #b4c6fc; /* Fondo azul/morado del video */
+            background-color: #b4c6fc;
             font-family: sans-serif;
             margin: 0;
             padding: 20px;
@@ -80,7 +80,6 @@
         .next-btn { background-color: #ffe600; color: #000; margin-top: 20px; width: 100%; box-shadow: 3px 3px 0px #000; }
         .cat-container { font-size: 70px; margin: 15px 0; }
         
-        /* Cuadrículas de opciones */
         .grid-options {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -101,33 +100,8 @@
             align-items: center;
             gap: 5px;
             user-select: none;
-            transition: transform 0.1s;
         }
         .option-box span { font-size: 1.6rem; }
-        .option-box:active {
-            background: #b4c6fc;
-            transform: scale(0.95);
-        }
-
-        /* Bloque visual estático del resumen final */
-        .resumen-lista {
-            background: white;
-            border: 2px solid #000;
-            border-radius: 16px;
-            padding: 15px;
-            margin: 20px 0;
-            text-align: left;
-            box-shadow: 3px 3px 0px #000;
-        }
-        .resumen-item {
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin: 10px 0;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #000;
-        }
     </style>
 </head>
 <body>
@@ -144,7 +118,7 @@
             </div>
         </div>
 
-        <!-- PASO INTERMEDIO: REACCIÓN AL SÍ -->
+        <!-- PASO INTERMEDIO -->
         <div id="stepIntermedio" class="step">
             <span class="tag-step">Momento Emotivo</span>
             <div class="cat-container">✨😻✨</div>
@@ -167,7 +141,7 @@
             <button class="next-btn" onclick="irAlPaso3()">Siguiente ➔</button>
         </div>
 
-        <!-- PASO 3: SELECCIÓN DE COMIDA (Tocar avanza directo de forma segura) -->
+        <!-- PASO 3: SELECCIÓN DE COMIDA -->
         <div id="step3" class="step">
             <span class="tag-step">Paso 2</span>
             <div class="cat-container">🐱🍕</div>
@@ -202,18 +176,17 @@
             </div>
         </div>
 
-        <!-- PASO 5: LA ÚLTIMA VENTANA COMPLETAMENTE FIJA Y SEGURA -->
+        <!-- PASO 5: LA ÚLTIMA VENTANA FIJA -->
         <div id="step5" class="step">
             <span class="tag-step">Confirmado</span>
             <div class="cat-container">🐱🚗💨</div>
             <h2>¡Trato hecho, Astrid! 🎉</h2>
             <p>¡Nuestra salida ha sido agendada con éxito!</p>
             
-            <!-- Resumen fijo con los emojis integrados nativamente en el texto -->
-            <div class="resumen-lista">
-                <div class="resumen-item">📅 Día y Hora: <span id="resumenDiaHora"></span></div>
-                <div class="resumen-item">🍕 Comida: ¡Seleccionada con éxito!</div>
-                <div class="resumen-item">🥂 Bebida: ¡Seleccionada con éxito!</div>
+            <div class="resumen-lista" style="background: white; border: 2px solid #000; border-radius: 16px; padding: 15px; margin: 20px 0; text-align: left; box-shadow: 3px 3px 0px #000;">
+                <div style="font-size: 1.1rem; font-weight: bold; margin: 10px 0; color: #000;">📅 Día y Hora: <span id="resumenDiaHora"></span></div>
+                <div style="font-size: 1.1rem; font-weight: bold; margin: 10px 0; color: #000;">🍕 Comida: ¡Seleccionada con éxito!</div>
+                <div style="font-size: 1.1rem; font-weight: bold; margin: 10px 0; color: #000;">🥂 Bebida: ¡Seleccionada con éxito!</div>
             </div>
             
             <div style="background: #ffe6a3; padding: 15px; border-radius: 12px; border: 2px solid #000; font-weight: bold; margin: 20px 0;">
@@ -226,18 +199,36 @@
     </div>
 
     <script>
-        let tamanoSi = 1;
-        let clickNo = 0;
-        const gatosVideo = ["🐱👓", "🙀", "😾", "😭", "🐈🐾"];
+        var tamanoSi = 1;
+        var clickNo = 0;
+        var gatosVideo = ["🐱\uD83D\uDC53", "\uD83D\uDE40", "\uD83D\uDE3F", "\uD83D\uDE2D", "\uD83D\uDC08\uD83D\uDC3E"];
 
         function accionNo() {
             clickNo++;
-            const btnNo = document.getElementById('btnNo');
-            const btnSi = document.getElementById('btnSi');
-            const gato = document.getElementById('gatoMeme');
+            var btnNo = document.getElementById('btnNo');
+            var btnSi = document.getElementById('btnSi');
+            var gato = document.getElementById('gatoMeme');
             
             tamanoSi += 0.35;
             btnSi.style.transform = "scale(" + tamanoSi + ")";
             gato.innerText = gatosVideo[clickNo % gatosVideo.length];
             
-            const x = Math.random() * (window.innerWidth - 120);
+            var x = Math.random() * (window.innerWidth - 120);
+            var y = Math.random() * (window.innerHeight - 80);
+            
+            btnNo.style.position = "fixed";
+            btnNo.style.left = x + "px";
+            btnNo.style.top = y + "px";
+        }
+
+        function irAlPasoIntermedio() {
+            document.getElementById('btnNo').style.position = "absolute"; 
+            nextStep('stepIntermedio');
+        }
+
+        function irAlPaso2() { nextStep('step2'); }
+        function irAlPaso3() { nextStep('step3'); }
+        function irAlPaso4() { nextStep('step4'); }
+        
+        function irAlPasoFinal() {
+            var fechaVal = document.getElementById('fechaCita').value;
