@@ -147,7 +147,7 @@
             <button class="next-btn" onclick="irAlPaso3()">Siguiente ➔</button>
         </div>
 
-        <!-- PASO 3: SELECCIÓN DE COMIDA -->
+        <!-- PASO 3: SELECCIÓN DE COMIDA (Al tocar una casilla avanza automáticamente) -->
         <div id="step3" class="step">
             <span class="tag-step">Paso 2</span>
             <div class="cat-container">🐱🍕</div>
@@ -166,7 +166,7 @@
             </div>
         </div>
 
-        <!-- PASO 4: SELECCIÓN DE BEBIDAS -->
+        <!-- PASO 4: SELECCIÓN DE BEBIDAS (Al tocar una casilla va al paso final) -->
         <div id="step4" class="step">
             <span class="tag-step">Paso 3</span>
             <div class="cat-container">🐱🥂</div>
@@ -182,7 +182,7 @@
             </div>
         </div>
 
-        <!-- PASO 5: LA ÚLTIMA VENTANA CON LA FRASE INYECTADA DE FORMA SEGURA -->
+        <!-- PASO 5: LA ÚLTIMA VENTANA FIJA SEGURA -->
         <div id="step5" class="step">
             <span class="tag-step">Confirmado</span>
             <div class="cat-container">🐱🚗💨</div>
@@ -193,34 +193,28 @@
                 💛 ¡Todo listo para vernos ese día! 💛
             </div>
             
-            <!-- CONTENEDOR SEGURO: Muestra el mensaje final sin usar procesos pesados de código -->
-            <p id="mensajeSalidaFinal" style="font-size: 1.2rem; font-weight: bold; color: #000; margin: 20px 0; line-height: 1.4;"></p>
-            
+            <p style="font-size: 1.2rem; font-weight: bold; color: #000; margin: 20px 0;">Listo, nos vemos ese día, Astrid :D</p>
             <p style="font-size: 0.9rem; color: #555; margin-top: 25px; font-style: italic;">¡Tómale captura a esta pantalla y envíamelo por mensaje! 😉🔥</p>
         </div>
     </div>
 
     <script>
-        var tamanoSi = 1;
-        var clickNo = 0;
+        let tamanoSi = 1;
+        let clickNo = 0;
+        const gatosVideo = ["🐱👓", "🙀", "😾", "😭", "🐈🐾"];
 
         function accionNo() {
             clickNo++;
-            var btnNo = document.getElementById('btnNo');
-            var btnSi = document.getElementById('btnSi');
-            var gato = document.getElementById('gatoMeme');
+            const btnNo = document.getElementById('btnNo');
+            const btnSi = document.getElementById('btnSi');
+            const gato = document.getElementById('gatoMeme');
             
             tamanoSi += 0.35;
             btnSi.style.transform = "scale(" + tamanoSi + ")";
+            gato.innerText = gatosVideo[clickNo % gatosVideo.length];
             
-            // Alterna los emojis de forma directa sin usar arreglos globales complejos que se congelen
-            if (clickNo % 4 == 1) gato.innerText = "🐱👓";
-            else if (clickNo % 4 == 2) gato.innerText = "🙀";
-            else if (clickNo % 4 == 3) gato.innerText = "😾";
-            else gato.innerText = "😭";
-            
-            var x = Math.random() * (window.innerWidth - 120);
-            var y = Math.random() * (window.innerHeight - 80);
+            const x = Math.random() * (window.innerWidth - 120);
+            const y = Math.random() * (window.innerHeight - 80);
             
             btnNo.style.position = "fixed";
             btnNo.style.left = x + "px";
@@ -235,8 +229,14 @@
         function irAlPaso2() { nextStep('step2'); }
         function irAlPaso3() { nextStep('step3'); }
         function irAlPaso4() { nextStep('step4'); }
-        
-        function irAlPasoFinal() {
-            var f = document.getElementById('fechaCita').value;
-            var h = document.getElementById('horaCita').value;
-            
+        function irAlPasoFinal() { nextStep('step5'); }
+
+        function nextStep(stepId) {
+            document.querySelectorAll('.step').forEach(function(step) {
+                step.classList.remove('active');
+            });
+            document.getElementById(stepId).classList.add('active');
+        }
+    </script>
+</body>
+</html>
