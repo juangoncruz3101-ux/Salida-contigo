@@ -109,7 +109,7 @@
             transform: scale(0.95);
         }
 
-        /* Estilo simple para el bloque del resumen final */
+        /* Bloque visual estático del resumen final */
         .resumen-lista {
             background: white;
             border: 2px solid #000;
@@ -167,54 +167,53 @@
             <button class="next-btn" onclick="irAlPaso3()">Siguiente ➔</button>
         </div>
 
-        <!-- PASO 3: SELECCIÓN DE COMIDA (Pasa el emoji como argumento) -->
+        <!-- PASO 3: SELECCIÓN DE COMIDA (Tocar avanza directo de forma segura) -->
         <div id="step3" class="step">
             <span class="tag-step">Paso 2</span>
             <div class="cat-container">🐱🍕</div>
             <h2>¿Qué se te antoja comer?</h2>
             <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">(Toca tu opción favorita para avanzar)</p>
             <div class="grid-options">
-                <div class="option-box" onclick="guardarComida('🍕')"><span>🍕</span>pizza</div>
-                <div class="option-box" onclick="guardarComida('🍣')"><span>🍣</span>japonesa</div>
-                <div class="option-box" onclick="guardarComida('🌮')"><span>🌮</span>tacos</div>
-                <div class="option-box" onclick="guardarComida('🍔')"><span>🍔</span>burger</div>
-                <div class="option-box" onclick="guardarComida('🍝')"><span>🍝</span>pasta</div>
-                <div class="option-box" onclick="guardarComida('🍜')"><span>🍜</span>coreana</div>
-                <div class="option-box" onclick="guardarComida('🧁')"><span>🧁</span>postre</div>
-                <div class="option-box" onclick="guardarComida('☕')"><span>☕</span>café</div>
-                <div class="option-box" onclick="guardarComida('🥞')"><span>🥞</span>brunch</div>
+                <div class="option-box" onclick="irAlPaso4()"><span>🍕</span>pizza</div>
+                <div class="option-box" onclick="irAlPaso4()"><span>🍣</span>japonesa</div>
+                <div class="option-box" onclick="irAlPaso4()"><span>🌮</span>tacos</div>
+                <div class="option-box" onclick="irAlPaso4()"><span>🍔</span>burger</div>
+                <div class="option-box" onclick="irAlPaso4()"><span>🍝</span>pasta</div>
+                <div class="option-box" onclick="irAlPaso4()"><span>🍜</span>coreana</div>
+                <div class="option-box" onclick="irAlPaso4()"><span>🧁</span>postre</div>
+                <div class="option-box" onclick="irAlPaso4()"><span>☕</span>café</div>
+                <div class="option-box" onclick="irAlPaso4()"><span>🥞</span>brunch</div>
             </div>
         </div>
 
-        <!-- PASO 4: SELECCIÓN DE BEBIDAS (Pasa el emoji y arma el final) -->
+        <!-- PASO 4: SELECCIÓN DE BEBIDAS -->
         <div id="step4" class="step">
             <span class="tag-step">Paso 3</span>
             <div class="cat-container">🐱🥂</div>
             <h2>¿Y para tomar? 🥂</h2>
             <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">(Toca tu opción favorita para avanzar)</p>
             <div class="grid-options">
-                <div class="option-box" onclick="irAlPasoFinal('🍷')"><span>🍷</span>Vinos</div>
-                <div class="option-box" onclick="irAlPasoFinal('🍺')"><span>🍺</span>Cerveza</div>
-                <div class="option-box" onclick="irAlPasoFinal('🍹')"><span>🍹</span>Trago</div>
-                <div class="option-box" onclick="irAlPasoFinal('🍶')"><span>🍶</span>Sake</div>
-                <div class="option-box" onclick="irAlPasoFinal('🍾')"><span>🍾</span>Soju</div>
-                <div class="option-box" onclick="irAlPasoFinal('🥤')"><span>🥤</span>Cualquier otra</div>
+                <div class="option-box" onclick="irAlPasoFinal()"><span>🍷</span>Vinos</div>
+                <div class="option-box" onclick="irAlPasoFinal()"><span>🍺</span>Cerveza</div>
+                <div class="option-box" onclick="irAlPasoFinal()"><span>🍹</span>Trago</div>
+                <div class="option-box" onclick="irAlPasoFinal()"><span>🍶</span>Sake</div>
+                <div class="option-box" onclick="irAlPasoFinal()"><span>🍾</span>Soju</div>
+                <div class="option-box" onclick="irAlPasoFinal()"><span>🥤</span>Cualquier otra</div>
             </div>
         </div>
 
-        <!-- PASO 5: LA ÚLTIMA VENTANA CON EMOJIS SELECCIONADOS -->
+        <!-- PASO 5: LA ÚLTIMA VENTANA COMPLETAMENTE FIJA Y SEGURA -->
         <div id="step5" class="step">
             <span class="tag-step">Confirmado</span>
             <div class="cat-container">🐱🚗💨</div>
             <h2>¡Trato hecho, Astrid! 🎉</h2>
             <p>¡Nuestra salida ha sido agendada con éxito!</p>
             
-            <!-- Resumen dinámico básico que cambia solo los textos y emojis -->
+            <!-- Resumen fijo con los emojis integrados nativamente en el texto -->
             <div class="resumen-lista">
-                <div class="resumen-item">📅 Día: <span id="resumenDia"></span></div>
-                <div class="resumen-item">⏰ Hora: <span id="resumenHora"></span></div>
-                <div class="resumen-item"><span id="resumenComidaEmoji">🍕</span> Comida: ¡Elegida!</div>
-                <div class="resumen-item"><span id="resumenBebidaEmoji">🥂</span> Bebida: ¡Elegida!</div>
+                <div class="resumen-item">📅 Día y Hora: <span id="resumenDiaHora"></span></div>
+                <div class="resumen-item">🍕 Comida: ¡Seleccionada con éxito!</div>
+                <div class="resumen-item">🥂 Bebida: ¡Seleccionada con éxito!</div>
             </div>
             
             <div style="background: #ffe6a3; padding: 15px; border-radius: 12px; border: 2px solid #000; font-weight: bold; margin: 20px 0;">
@@ -229,13 +228,16 @@
     <script>
         let tamanoSi = 1;
         let clickNo = 0;
-        
-        // Variables básicas para guardar los emojis elegidos temporalmente
-        let comidaElegida = "🍕";
-
         const gatosVideo = ["🐱👓", "🙀", "😾", "😭", "🐈🐾"];
 
         function accionNo() {
             clickNo++;
             const btnNo = document.getElementById('btnNo');
             const btnSi = document.getElementById('btnSi');
+            const gato = document.getElementById('gatoMeme');
+            
+            tamanoSi += 0.35;
+            btnSi.style.transform = "scale(" + tamanoSi + ")";
+            gato.innerText = gatosVideo[clickNo % gatosVideo.length];
+            
+            const x = Math.random() * (window.innerWidth - 120);
