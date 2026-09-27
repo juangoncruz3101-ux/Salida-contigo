@@ -182,7 +182,7 @@
             </div>
         </div>
 
-        <!-- PASO 5: LA ÚLTIMA VENTANA CON TU NUEVA FRASE DINÁMICA -->
+        <!-- PASO 5: LA ÚLTIMA VENTANA CON TU FRASE DINÁMICA ULTRA-SIMPLIFICADA -->
         <div id="step5" class="step">
             <span class="tag-step">Confirmado</span>
             <div class="cat-container">🐱🚗💨</div>
@@ -193,8 +193,10 @@
                 💛 ¡Todo listo para vernos ese día! 💛
             </div>
             
-            <!-- CAMBIO SOLICITADO AQUÍ: FRASE DINÁMICA SEGURA -->
-            <p id="fraseFinalDinamica" style="font-size: 1.2rem; font-weight: bold; color: #000; margin: 20px 0; line-height: 1.4;"></p>
+            <!-- FRASE DINÁMICA INYECTADA DE FORMA LITERAL SIN PROCESAR TEXTOS -->
+            <p style="font-size: 1.2rem; font-weight: bold; color: #000; margin: 20px 0; line-height: 1.4;">
+                listo nos vemos a las <span id="txtHora"></span> del <span id="txtFecha"></span>
+            </p>
             
             <p style="font-size: 0.9rem; color: #555; margin-top: 25px; font-style: italic;">¡Tómale captura a esta pantalla y envíamelo por mensaje! 😉🔥</p>
         </div>
@@ -203,7 +205,7 @@
     <script>
         let tamanoSi = 1;
         let clickNo = 0;
-        const gatosVideo = ["🐱👓", "🙀", "😾", "😭", "🐈🐾"];
+        const gatosVideo = ["🐱族", "🙀", "😾", "😭", "🐈🐾"];
 
         function accionNo() {
             clickNo++;
@@ -233,10 +235,10 @@
         function irAlPaso4() { nextStep('step4'); }
         
         function irAlPasoFinal() {
+            // Lectura nativa ultra-directa y segura
             const f = document.getElementById('fechaCita').value;
             const h = document.getElementById('horaCita').value;
             
-            // Invierte el formato de fecha AAAA-MM-DD a DD/MM/AAAA de forma ultra básica
-            const a = f.substring(0, 4);
-            const m = f.substring(5, 7);
-            const d = f.substring(8, 10);
+            document.getElementById('txtHora').innerText = h;
+            document.getElementById('txtFecha').innerText = f;
+            
