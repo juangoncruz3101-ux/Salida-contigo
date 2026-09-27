@@ -182,7 +182,7 @@
             </div>
         </div>
 
-        <!-- PASO 5: LA ÚLTIMA VENTANA CON TU FRASE DINÁMICA ULTRA-SIMPLIFICADA -->
+        <!-- PASO 5: LA ÚLTIMA VENTANA CON LA FRASE INYECTADA DE FORMA SEGURA -->
         <div id="step5" class="step">
             <span class="tag-step">Confirmado</span>
             <div class="cat-container">🐱🚗💨</div>
@@ -193,32 +193,34 @@
                 💛 ¡Todo listo para vernos ese día! 💛
             </div>
             
-            <!-- FRASE DINÁMICA INYECTADA DE FORMA LITERAL SIN PROCESAR TEXTOS -->
-            <p style="font-size: 1.2rem; font-weight: bold; color: #000; margin: 20px 0; line-height: 1.4;">
-                listo nos vemos a las <span id="txtHora"></span> del <span id="txtFecha"></span>
-            </p>
+            <!-- CONTENEDOR SEGURO: Muestra el mensaje final sin usar procesos pesados de código -->
+            <p id="mensajeSalidaFinal" style="font-size: 1.2rem; font-weight: bold; color: #000; margin: 20px 0; line-height: 1.4;"></p>
             
             <p style="font-size: 0.9rem; color: #555; margin-top: 25px; font-style: italic;">¡Tómale captura a esta pantalla y envíamelo por mensaje! 😉🔥</p>
         </div>
     </div>
 
     <script>
-        let tamanoSi = 1;
-        let clickNo = 0;
-        const gatosVideo = ["🐱族", "🙀", "😾", "😭", "🐈🐾"];
+        var tamanoSi = 1;
+        var clickNo = 0;
 
         function accionNo() {
             clickNo++;
-            const btnNo = document.getElementById('btnNo');
-            const btnSi = document.getElementById('btnSi');
-            const gato = document.getElementById('gatoMeme');
+            var btnNo = document.getElementById('btnNo');
+            var btnSi = document.getElementById('btnSi');
+            var gato = document.getElementById('gatoMeme');
             
             tamanoSi += 0.35;
             btnSi.style.transform = "scale(" + tamanoSi + ")";
-            gato.innerText = gatosVideo[clickNo % gatosVideo.length];
             
-            const x = Math.random() * (window.innerWidth - 120);
-            const y = Math.random() * (window.innerHeight - 80);
+            // Alterna los emojis de forma directa sin usar arreglos globales complejos que se congelen
+            if (clickNo % 4 == 1) gato.innerText = "🐱👓";
+            else if (clickNo % 4 == 2) gato.innerText = "🙀";
+            else if (clickNo % 4 == 3) gato.innerText = "😾";
+            else gato.innerText = "😭";
+            
+            var x = Math.random() * (window.innerWidth - 120);
+            var y = Math.random() * (window.innerHeight - 80);
             
             btnNo.style.position = "fixed";
             btnNo.style.left = x + "px";
@@ -235,10 +237,6 @@
         function irAlPaso4() { nextStep('step4'); }
         
         function irAlPasoFinal() {
-            // Lectura nativa ultra-directa y segura
-            const f = document.getElementById('fechaCita').value;
-            const h = document.getElementById('horaCita').value;
-            
-            document.getElementById('txtHora').innerText = h;
-            document.getElementById('txtFecha').innerText = f;
+            var f = document.getElementById('fechaCita').value;
+            var h = document.getElementById('horaCita').value;
             
