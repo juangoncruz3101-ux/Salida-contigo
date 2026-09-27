@@ -66,7 +66,7 @@
         .step { display: none; }
         .step.active { display: block; }
         
-        input {
+        input, select {
             width: 100%;
             padding: 12px;
             margin: 8px 0;
@@ -76,6 +76,12 @@
             font-weight: bold;
             box-sizing: border-box;
             background-color: white;
+        }
+        .hint-hora {
+            font-size: 0.8rem;
+            color: #666;
+            margin: -4px 0 8px 0;
+            text-align: left;
         }
         .next-btn { background-color: #ffe600; color: #000; margin-top: 20px; width: 100%; box-shadow: 3px 3px 0px #000; }
         .cat-container { font-size: 70px; margin: 15px 0; }
@@ -141,8 +147,9 @@
             <p>Pero tú elige las siguientes opciones:</p>
             <p style="font-weight: bold;">1 - Elige el día y la hora:</p>
             
-            <input type="date" id="fechaCita" min="2026-10-01" value="2026-10-01">
-            <input type="time" id="horaCita" value="20:00">
+            <input type="date" id="fechaCita" min="2026-10-01" value="2026-10-01" onchange="actualizarRestriccionesHora()">
+            <select id="horaCita"></select>
+            <p class="hint-hora" id="hintHora">Horario disponible: lunes a viernes 8pm-12am, sábado 3pm-12am, domingo todo el día. (8 de octubre es feriado: todo el día disponible)</p>
             
             <button class="next-btn" onclick="irAlPaso3()">Siguiente ➔</button>
         </div>
@@ -193,7 +200,7 @@
                 💛 ¡Todo listo para vernos ese día! 💛
             </div>
             
-            <p id="mensajeFinal" style="font-size: 1.2rem; font-weight: bold; color: #000; margin: 20px 0;">Listo, nos vemos ese día, Astrid :D</p>
+            <p id="mensajeFinal" style="font-size: 1.2rem; font-weight: bold; color: #000; margin: 20px 0;">Listo, nos vemos ese día 😉</p>
             <p style="font-size: 0.9rem; color: #555; margin-top: 25px; font-style: italic;">¡Tómale captura a esta pantalla y envíamelo por mensaje! 😉🔥</p>
         </div>
     </div>
@@ -232,7 +239,90 @@
             nextStep('stepIntermedio');
         }
 
-        function irAlPaso2() { nextStep('step2'); }
+        function irAlPaso2() {
+            nextStep('step2');
+            actualizarRestriccionesHora();
+        }
+
+        function pad(n) {
+            return n < 10 ? "0" + n : "" + n;
+        }
+
+        // Convierte minutos-del-día a texto tipo "8:00 pm"
+        function formatoAmPm(horas, minutos) {
+            const sufijo = horas >= 12 ? "pm" : "am";
+            let h12 = horas % 12;
+            if (h12 === 0) h12 = 12;
+            return h12 + ":" + pad(minutos) + " " + sufijo;
+        }
+
+        // Genera la lista de horarios válidos (cada 30 min) según el día de la semana
+        function generarHorasDisponibles(dia) {
+            let inicioMin, finMin;
+
+            if (dia >= 1 && dia <= 5) {
+                // Lunes a viernes: 8:00 pm a 12:00 am
+                inicioMin = 20 * 60;
+                finMin = 23 * 60 + 30;
+            } else if (dia === 6) {
+                // Sábado: 3:00 pm a 12:00 am
+                inicioMin = 15 * 60;
+                finMin = 23 * 60 + 30;
+            } else {
+                // Domingo: todo el día
+                inicioMin = 0;
+                finMin = 23 * 60 + 30;
+            }
+
+            const opciones = [];
+            for (let m = inicioMin; m <= finMin; m += 30) {
+                const h = Math.floor(m / 60);
+                const mm = m % 60;
+                opciones.push({
+                    valor: pad(h) + ":" + pad(mm),
+                    etiqueta: formatoAmPm(h, mm)
+                });
+            }
+            return opciones;
+        }
+
+        // Rellena el <select> de horas solo con las opciones válidas para el día elegido
+        function actualizarRestriccionesHora() {
+            try {
+                const fechaInput = document.getElementById('fechaCita').value;
+                const selectHora = document.getElementById('horaCita');
+                if (!fechaInput || !selectHora) return;
+
+                const partes = fechaInput.split('-');
+                const fechaObj = new Date(partes[0], partes[1] - 1, partes[2]);
+                let dia = fechaObj.getDay(); // 0 = domingo, 1-5 = lunes a viernes, 6 = sábado
+
+                // Excepción: 8 de octubre de 2026 es feriado, se trata como domingo (todo el día)
+                const esFeriado = (fechaInput === '2026-10-08');
+                if (esFeriado) {
+                    dia = 0;
+                }
+
+                const valorPrevio = selectHora.value;
+                const opciones = generarHorasDisponibles(dia);
+
+                selectHora.innerHTML = "";
+                opciones.forEach(function(op) {
+                    const el = document.createElement('option');
+                    el.value = op.valor;
+                    el.textContent = op.etiqueta;
+                    selectHora.appendChild(el);
+                });
+
+                // Si la hora que tenía elegida sigue siendo válida para el nuevo día, la mantenemos
+                const sigueSiendoValida = opciones.some(function(op) { return op.valor === valorPrevio; });
+                if (sigueSiendoValida) {
+                    selectHora.value = valorPrevio;
+                }
+            } catch (e) {
+                // Si algo falla, no bloqueamos el flujo de la página
+            }
+        }
 
         function irAlPaso3() {
             // Guardamos la fecha y hora elegidas por Astrid, con manejo de errores
@@ -253,8 +343,7 @@
             }
 
             try {
-                const horaInput = document.getElementById('horaCita').value; // formato: HH:MM
-                horaFormateada = horaInput || "";
+                horaFormateada = document.getElementById('horaCita').value || "";
             } catch (e) {
                 horaFormateada = "";
             }
@@ -276,7 +365,7 @@
             let mensaje = "Listo, nos vemos";
             if (fechaFormateada) mensaje += " el " + fechaFormateada;
             if (horaFormateada) mensaje += " a las " + horaFormateada;
-            mensaje += ", Astrid :D";
+            mensaje += " 😉";
             document.getElementById('mensajeFinal').innerText = mensaje;
 
             nextStep('step5');
@@ -288,6 +377,9 @@
             });
             document.getElementById(stepId).classList.add('active');
         }
+
+        // Rellenamos el selector de horas con el rango válido para la fecha por defecto
+        actualizarRestriccionesHora();
     </script>
 </body>
 </html>
