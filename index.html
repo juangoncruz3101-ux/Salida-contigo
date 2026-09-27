@@ -27,7 +27,6 @@
             text-align: center;
             border: 3px solid #000;
             box-sizing: border-box;
-            position: relative;
         }
         .tag-step {
             background: #ffe6a3;
@@ -49,7 +48,7 @@
             align-items: center;
             gap: 20px;
             margin-top: 25px;
-            height: 110px;
+            height: 90px;
             position: relative;
         }
         button {
@@ -61,8 +60,8 @@
             cursor: pointer;
             box-shadow: 3px 3px 0px #000;
         }
-        #btnSi { background-color: #a3fca3; color: #000; z-index: 10; }
-        #btnNo { background-color: #fca3a3; color: #000; position: absolute; z-index: 5; transition: transform 0.1s ease; }
+        #btnSi { background-color: #a3fca3; color: #000; }
+        #btnNo { background-color: #fca3a3; color: #000; position: absolute; transition: all 0.1s ease; }
         
         .step { display: none; }
         .step.active { display: block; }
@@ -80,7 +79,8 @@
         }
         .next-btn { background-color: #ffe600; color: #000; margin-top: 20px; width: 100%; box-shadow: 3px 3px 0px #000; }
         .cat-container { font-size: 70px; margin: 15px 0; }
-
+        
+        /* Cuadrículas de opciones */
         .grid-options {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -101,9 +101,15 @@
             align-items: center;
             gap: 5px;
             user-select: none;
+            transition: transform 0.1s;
         }
         .option-box span { font-size: 1.6rem; }
+        .option-box:active {
+            background: #b4c6fc;
+            transform: scale(0.95);
+        }
 
+        /* Estilo simple para el bloque del resumen final */
         .resumen-lista {
             background: white;
             border: 2px solid #000;
@@ -114,34 +120,13 @@
             box-shadow: 3px 3px 0px #000;
         }
         .resumen-item {
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             font-weight: bold;
             margin: 10px 0;
             display: flex;
             align-items: center;
             gap: 12px;
             color: #000;
-        }
-        .emoji-circle {
-            background: #ffe6a3;
-            border: 2px solid #000;
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            flex-shrink: 0;
-        }
-        .text-detail {
-            display: flex;
-            flex-direction: column;
-        }
-        .text-detail label {
-            font-size: 0.75rem;
-            color: #666;
-            text-transform: uppercase;
         }
     </style>
 </head>
@@ -155,11 +140,11 @@
             <h2>¿Quieres acompañarme a hacer algo divertido juntos?</h2>
             <div class="btn-container">
                 <button id="btnSi" onclick="irAlPasoIntermedio()">Sí</button>
-                <button id="btnNo" style="transform: translate(60px, 0px);" onclick="accionNo()" ontouchstart="accionNo()" onmouseover="accionNo()">No</button>
+                <button id="btnNo" style="right: 40px;" onclick="accionNo()" onmouseover="accionNo()">No</button>
             </div>
         </div>
 
-        <!-- PASO INTERMEDIO -->
+        <!-- PASO INTERMEDIO: REACCIÓN AL SÍ -->
         <div id="stepIntermedio" class="step">
             <span class="tag-step">Momento Emotivo</span>
             <div class="cat-container">✨😻✨</div>
@@ -182,7 +167,7 @@
             <button class="next-btn" onclick="irAlPaso3()">Siguiente ➔</button>
         </div>
 
-        <!-- PASO 3: SELECCIÓN DE COMIDA -->
+        <!-- PASO 3: SELECCIÓN DE COMIDA (Pasa el emoji como argumento) -->
         <div id="step3" class="step">
             <span class="tag-step">Paso 2</span>
             <div class="cat-container">🐱🍕</div>
@@ -201,46 +186,56 @@
             </div>
         </div>
 
-        <!-- PASO 4: SELECCIÓN DE BEBIDAS -->
+        <!-- PASO 4: SELECCIÓN DE BEBIDAS (Pasa el emoji y arma el final) -->
         <div id="step4" class="step">
             <span class="tag-step">Paso 3</span>
             <div class="cat-container">🐱🥂</div>
             <h2>¿Y para tomar? 🥂</h2>
             <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">(Toca tu opción favorita para avanzar)</p>
             <div class="grid-options">
-                <div class="option-box" onclick="guardarBebida('🍷')"><span>🍷</span>Vinos</div>
-                <div class="option-box" onclick="guardarBebida('🍺')"><span>🍺</span>Cerveza</div>
-                <div class="option-box" onclick="guardarBebida('🍹')"><span>🍹</span>Trago</div>
-                <div class="option-box" onclick="guardarBebida('🍶')"><span>🍶</span>Sake</div>
-                <div class="option-box" onclick="guardarBebida('🍾')"><span>🍾</span>Soju</div>
-                <div class="option-box" onclick="guardarBebida('🥤')"><span>🥤</span>Cualquier otra</div>
+                <div class="option-box" onclick="irAlPasoFinal('🍷')"><span>🍷</span>Vinos</div>
+                <div class="option-box" onclick="irAlPasoFinal('🍺')"><span>🍺</span>Cerveza</div>
+                <div class="option-box" onclick="irAlPasoFinal('🍹')"><span>🍹</span>Trago</div>
+                <div class="option-box" onclick="irAlPasoFinal('🍶')"><span>🍶</span>Sake</div>
+                <div class="option-box" onclick="irAlPasoFinal('🍾')"><span>🍾</span>Soju</div>
+                <div class="option-box" onclick="irAlPasoFinal('🥤')"><span>🥤</span>Cualquier otra</div>
             </div>
         </div>
 
-        <!-- PASO 5: RESUMEN FINAL -->
+        <!-- PASO 5: LA ÚLTIMA VENTANA CON EMOJIS SELECCIONADOS -->
         <div id="step5" class="step">
             <span class="tag-step">Confirmado</span>
             <div class="cat-container">🐱🚗💨</div>
             <h2>¡Trato hecho, Astrid! 🎉</h2>
             <p>¡Nuestra salida ha sido agendada con éxito!</p>
             
+            <!-- Resumen dinámico básico que cambia solo los textos y emojis -->
             <div class="resumen-lista">
-                <div class="resumen-item">
-                    <div class="emoji-circle">📅</div>
-                    <div class="text-detail"><label>Día elegido</label><span id="finalDia"></span></div>
-                </div>
-                <div class="resumen-item">
-                    <div class="emoji-circle">⏰</div>
-                    <div class="text-detail"><label>Hora elegida</label><span id="finalHora"></span></div>
-                </div>
-                <div class="resumen-item">
-                    <div class="emoji-circle" id="finalEmojiComida">🍕</div>
-                    <div class="text-detail"><label>Comida elegida</label><span>¡Seleccionada! 💛</span></div>
-                </div>
-                <div class="resumen-item">
-                    <div class="emoji-circle" id="finalEmojiBebida">🥂</div>
-                    <div class="text-detail"><label>Bebida elegida</label><span>¡Seleccionada! 🥂</span></div>
-                </div>
+                <div class="resumen-item">📅 Día: <span id="resumenDia"></span></div>
+                <div class="resumen-item">⏰ Hora: <span id="resumenHora"></span></div>
+                <div class="resumen-item"><span id="resumenComidaEmoji">🍕</span> Comida: ¡Elegida!</div>
+                <div class="resumen-item"><span id="resumenBebidaEmoji">🥂</span> Bebida: ¡Elegida!</div>
             </div>
             
             <div style="background: #ffe6a3; padding: 15px; border-radius: 12px; border: 2px solid #000; font-weight: bold; margin: 20px 0;">
+                💛 ¡Todo listo para vernos ese día! 💛
+            </div>
+            
+            <p style="font-size: 1.2rem; font-weight: bold; color: #000; margin: 20px 0;">Listo, nos vemos ese día, Astrid :D</p>
+            <p style="font-size: 0.9rem; color: #555; margin-top: 25px; font-style: italic;">¡Tómale captura a esta pantalla y envíamelo por mensaje! 😉🔥</p>
+        </div>
+    </div>
+
+    <script>
+        let tamanoSi = 1;
+        let clickNo = 0;
+        
+        // Variables básicas para guardar los emojis elegidos temporalmente
+        let comidaElegida = "🍕";
+
+        const gatosVideo = ["🐱👓", "🙀", "😾", "😭", "🐈🐾"];
+
+        function accionNo() {
+            clickNo++;
+            const btnNo = document.getElementById('btnNo');
+            const btnSi = document.getElementById('btnSi');
