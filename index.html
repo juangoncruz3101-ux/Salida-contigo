@@ -154,15 +154,15 @@
             <h2>¿Qué se te antoja comer?</h2>
             <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">(Toca tu opción favorita para avanzar)</p>
             <div class="grid-options">
-                <div class="option-box" onclick="irAlPaso4()"><span>🍕</span>pizza</div>
-                <div class="option-box" onclick="irAlPaso4()"><span>🍣</span>japonesa</div>
-                <div class="option-box" onclick="irAlPaso4()"><span>🌮</span>tacos</div>
-                <div class="option-box" onclick="irAlPaso4()"><span>🍔</span>burger</div>
-                <div class="option-box" onclick="irAlPaso4()"><span>🍝</span>pasta</div>
-                <div class="option-box" onclick="irAlPaso4()"><span>🍜</span>coreana</div>
-                <div class="option-box" onclick="irAlPaso4()"><span>🧁</span>postre</div>
-                <div class="option-box" onclick="irAlPaso4()"><span>☕</span>café</div>
-                <div class="option-box" onclick="irAlPaso4()"><span>🥞</span>brunch</div>
+                <div class="option-box" onclick="irAlPaso4('🍕')"><span>🍕</span>pizza</div>
+                <div class="option-box" onclick="irAlPaso4('🍣')"><span>🍣</span>japonesa</div>
+                <div class="option-box" onclick="irAlPaso4('🌮')"><span>🌮</span>tacos</div>
+                <div class="option-box" onclick="irAlPaso4('🍔')"><span>🍔</span>burger</div>
+                <div class="option-box" onclick="irAlPaso4('🍝')"><span>🍝</span>pasta</div>
+                <div class="option-box" onclick="irAlPaso4('🍜')"><span>🍜</span>coreana</div>
+                <div class="option-box" onclick="irAlPaso4('🧁')"><span>🧁</span>postre</div>
+                <div class="option-box" onclick="irAlPaso4('☕')"><span>☕</span>café</div>
+                <div class="option-box" onclick="irAlPaso4('🥞')"><span>🥞</span>brunch</div>
             </div>
         </div>
 
@@ -173,19 +173,19 @@
             <h2>¿Y para tomar? 🥂</h2>
             <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">(Toca tu opción favorita para avanzar)</p>
             <div class="grid-options">
-                <div class="option-box" onclick="irAlPasoFinal()"><span>🍷</span>Vinos</div>
-                <div class="option-box" onclick="irAlPasoFinal()"><span>🍺</span>Cerveza</div>
-                <div class="option-box" onclick="irAlPasoFinal()"><span>🍹</span>Trago</div>
-                <div class="option-box" onclick="irAlPasoFinal()"><span>🍶</span>Sake</div>
-                <div class="option-box" onclick="irAlPasoFinal()"><span>🍾</span>Soju</div>
-                <div class="option-box" onclick="irAlPasoFinal()"><span>🥤</span>Cualquier otra</div>
+                <div class="option-box" onclick="irAlPasoFinal('🍷')"><span>🍷</span>Vinos</div>
+                <div class="option-box" onclick="irAlPasoFinal('🍺')"><span>🍺</span>Cerveza</div>
+                <div class="option-box" onclick="irAlPasoFinal('🍹')"><span>🍹</span>Trago</div>
+                <div class="option-box" onclick="irAlPasoFinal('🍶')"><span>🍶</span>Sake</div>
+                <div class="option-box" onclick="irAlPasoFinal('🍾')"><span>🍾</span>Soju</div>
+                <div class="option-box" onclick="irAlPasoFinal('🥤')"><span>🥤</span>Cualquier otra</div>
             </div>
         </div>
 
         <!-- PASO 5: LA ÚLTIMA VENTANA FIJA SEGURA -->
         <div id="step5" class="step">
             <span class="tag-step">Confirmado</span>
-            <div class="cat-container">🐱🚗💨</div>
+            <div class="cat-container" id="gatoFinal">🐱🚗💨</div>
             <h2>¡Trato hecho, Astrid! 🎉</h2>
             <p>¡Nuestra salida ha sido agendada con éxito!</p>
             
@@ -193,7 +193,7 @@
                 💛 ¡Todo listo para vernos ese día! 💛
             </div>
             
-            <p style="font-size: 1.2rem; font-weight: bold; color: #000; margin: 20px 0;">Listo, nos vemos ese día, Astrid :D</p>
+            <p id="mensajeFinal" style="font-size: 1.2rem; font-weight: bold; color: #000; margin: 20px 0;">Listo, nos vemos ese día, Astrid :D</p>
             <p style="font-size: 0.9rem; color: #555; margin-top: 25px; font-style: italic;">¡Tómale captura a esta pantalla y envíamelo por mensaje! 😉🔥</p>
         </div>
     </div>
@@ -202,6 +202,12 @@
         let tamanoSi = 1;
         let clickNo = 0;
         const gatosVideo = ["🐱👓", "🙀", "😾", "😭", "🐈🐾"];
+
+        // Datos elegidos por Astrid, se van guardando a medida que avanza
+        let emojiComida = "";
+        let emojiBebida = "";
+        let fechaFormateada = "";
+        let horaFormateada = "";
 
         function accionNo() {
             clickNo++;
@@ -227,9 +233,54 @@
         }
 
         function irAlPaso2() { nextStep('step2'); }
-        function irAlPaso3() { nextStep('step3'); }
-        function irAlPaso4() { nextStep('step4'); }
-        function irAlPasoFinal() { nextStep('step5'); }
+
+        function irAlPaso3() {
+            // Guardamos la fecha y hora elegidas por Astrid, con manejo de errores
+            // para que nunca se rompa el flujo si algo sale raro con el formato.
+            try {
+                const fechaInput = document.getElementById('fechaCita').value; // formato: YYYY-MM-DD
+                if (fechaInput) {
+                    const partes = fechaInput.split('-');
+                    const fechaObj = new Date(partes[0], partes[1] - 1, partes[2]);
+                    fechaFormateada = fechaObj.toLocaleDateString('es-ES', {
+                        weekday: 'long',
+                        day: 'numeric',
+                        month: 'long'
+                    });
+                }
+            } catch (e) {
+                fechaFormateada = document.getElementById('fechaCita').value || "ese día";
+            }
+
+            try {
+                const horaInput = document.getElementById('horaCita').value; // formato: HH:MM
+                horaFormateada = horaInput || "";
+            } catch (e) {
+                horaFormateada = "";
+            }
+
+            nextStep('step3');
+        }
+
+        function irAlPaso4(emoji) {
+            emojiComida = emoji;
+            nextStep('step4');
+        }
+
+        function irAlPasoFinal(emoji) {
+            emojiBebida = emoji;
+            // Reemplaza el emoji de la pantalla final por los elegidos por Astrid
+            document.getElementById('gatoFinal').innerText = emojiComida + emojiBebida;
+
+            // Reemplaza el mensaje final con la fecha y hora elegidas
+            let mensaje = "Listo, nos vemos";
+            if (fechaFormateada) mensaje += " el " + fechaFormateada;
+            if (horaFormateada) mensaje += " a las " + horaFormateada;
+            mensaje += ", Astrid :D";
+            document.getElementById('mensajeFinal').innerText = mensaje;
+
+            nextStep('step5');
+        }
 
         function nextStep(stepId) {
             document.querySelectorAll('.step').forEach(function(step) {
