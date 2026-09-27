@@ -84,7 +84,7 @@
             text-align: left;
         }
         .next-btn { background-color: #ffe600; color: #000; margin-top: 20px; width: 100%; box-shadow: 3px 3px 0px #000; }
-        .cat-container { font-size: 70px; margin: 15px 0; }
+        .cat-container { font-size: 70px; margin: 15px 0; min-height: 0; }
         
         /* Cuadrículas de opciones */
         .grid-options {
@@ -228,7 +228,14 @@
     <script>
         let tamanoSi = 1;
         let clickNo = 0;
-        const gatosVideo = ["🐱👓", "🙀", "😾", "😭", "🐈🐾"];
+        // Pon aquí los nombres de tus imágenes, en el orden en que quieres que aparezcan
+        const memesNo = [
+            "meme1.jpg",
+            "meme2.jpg",
+            "meme3.jpg",
+            "meme4.jpg",
+            "meme5.jpg"
+        ];
 
         // Datos elegidos por Astrid, se van guardando a medida que avanza
         let emojiComida = "";
@@ -244,7 +251,17 @@
             
             tamanoSi += 0.35;
             btnSi.style.transform = "scale(" + tamanoSi + ")";
-            gato.innerText = gatosVideo[clickNo % gatosVideo.length];
+
+            try {
+                const meme = memesNo[clickNo % memesNo.length];
+                gato.innerHTML = '<img src="' + meme + '" alt="meme" '
+                    + 'style="display:block; margin:0 auto; width:100%; max-width:230px; max-height:230px; '
+                    + 'object-fit:cover; border-radius:16px; border:3px solid #000; box-shadow:4px 4px 0px #000; '
+                    + 'background:#fff; padding:4px; box-sizing:border-box;" '
+                    + 'onerror="this.onerror=null; this.replaceWith(document.createTextNode(\'🙀\'));">';
+            } catch (e) {
+                gato.innerText = "🙀";
+            }
             
             const x = Math.random() * (window.innerWidth - 120);
             const y = Math.random() * (window.innerHeight - 80);
