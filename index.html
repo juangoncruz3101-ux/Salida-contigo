@@ -6,7 +6,7 @@
     <title>¿Salimos? 💛</title>
     <style>
         body {
-            background-color: #b4c6fc; /* Fondo azul/morado del video */
+            background-color: #b4c6fc;
             font-family: sans-serif;
             margin: 0;
             padding: 20px;
@@ -27,6 +27,7 @@
             text-align: center;
             border: 3px solid #000;
             box-sizing: border-box;
+            position: relative;
         }
         .tag-step {
             background: #ffe6a3;
@@ -48,7 +49,7 @@
             align-items: center;
             gap: 20px;
             margin-top: 25px;
-            height: 90px;
+            height: 110px;
             position: relative;
         }
         button {
@@ -60,8 +61,8 @@
             cursor: pointer;
             box-shadow: 3px 3px 0px #000;
         }
-        #btnSi { background-color: #a3fca3; color: #000; }
-        #btnNo { background-color: #fca3a3; color: #000; position: absolute; transition: all 0.1s ease; }
+        #btnSi { background-color: #a3fca3; color: #000; z-index: 10; }
+        #btnNo { background-color: #fca3a3; color: #000; position: absolute; z-index: 5; transition: transform 0.1s ease; }
         
         .step { display: none; }
         .step.active { display: block; }
@@ -79,8 +80,7 @@
         }
         .next-btn { background-color: #ffe600; color: #000; margin-top: 20px; width: 100%; box-shadow: 3px 3px 0px #000; }
         .cat-container { font-size: 70px; margin: 15px 0; }
-        
-        /* Cuadrículas de opciones */
+
         .grid-options {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -101,16 +101,9 @@
             align-items: center;
             gap: 5px;
             user-select: none;
-            transition: transform 0.1s;
         }
         .option-box span { font-size: 1.6rem; }
-        .option-box.selected {
-            background: #b4c6fc;
-            box-shadow: 1px 1px 0px #000;
-            transform: translate(1px, 1px);
-        }
 
-        /* Bloque visual del resumen final */
         .resumen-lista {
             background: white;
             border: 2px solid #000;
@@ -162,11 +155,11 @@
             <h2>¿Quieres acompañarme a hacer algo divertido juntos?</h2>
             <div class="btn-container">
                 <button id="btnSi" onclick="irAlPasoIntermedio()">Sí</button>
-                <button id="btnNo" style="right: 40px;" onclick="accionNo()" onmouseover="accionNo()">No</button>
+                <button id="btnNo" style="transform: translate(60px, 0px);" onclick="accionNo()" ontouchstart="accionNo()" onmouseover="accionNo()">No</button>
             </div>
         </div>
 
-        <!-- PASO INTERMEDIO: REACCIÓN AL SÍ -->
+        <!-- PASO INTERMEDIO -->
         <div id="stepIntermedio" class="step">
             <span class="tag-step">Momento Emotivo</span>
             <div class="cat-container">✨😻✨</div>
@@ -189,7 +182,7 @@
             <button class="next-btn" onclick="irAlPaso3()">Siguiente ➔</button>
         </div>
 
-        <!-- PASO 3: SELECCIÓN DE COMIDA (Al tocar una opción guarda el emoji y avanza) -->
+        <!-- PASO 3: SELECCIÓN DE COMIDA -->
         <div id="step3" class="step">
             <span class="tag-step">Paso 2</span>
             <div class="cat-container">🐱🍕</div>
@@ -199,7 +192,7 @@
                 <div class="option-box" onclick="guardarComida('🍕')"><span>🍕</span>pizza</div>
                 <div class="option-box" onclick="guardarComida('🍣')"><span>🍣</span>japonesa</div>
                 <div class="option-box" onclick="guardarComida('🌮')"><span>🌮</span>tacos</div>
-                <div class="option-box" onclick="guardarComida('🍔')"><span>🍔</span>burger</div>
+                <div class="option-box" onclick="selectComidaAlternativo('🍔')"><span>🍔</span>burger</div>
                 <div class="option-box" onclick="guardarComida('🍝')"><span>🍝</span>pasta</div>
                 <div class="option-box" onclick="guardarComida('🍜')"><span>🍜</span>coreana</div>
                 <div class="option-box" onclick="guardarComida('🧁')"><span>🧁</span>postre</div>
@@ -208,7 +201,7 @@
             </div>
         </div>
 
-        <!-- PASO 4: SELECCIÓN DE BEBIDAS (Al tocar una opción va al paso final) -->
+        <!-- PASO 4: SELECCIÓN DE BEBIDAS -->
         <div id="step4" class="step">
             <span class="tag-step">Paso 3</span>
             <div class="cat-container">🐱🥂</div>
@@ -224,14 +217,13 @@
             </div>
         </div>
 
-        <!-- PASO 5: LA ÚLTIMA VENTANA SIN FUNCIONES DE TEXTO COMPLEJAS -->
+        <!-- PASO 5: RESUMEN FINAL -->
         <div id="step5" class="step">
             <span class="tag-step">Confirmado</span>
             <div class="cat-container">🐱🚗💨</div>
             <h2>¡Trato hecho, Astrid! 🎉</h2>
             <p>¡Nuestra salida ha sido agendada con éxito!</p>
             
-            <!-- Resumen ordenado con círculos de emojis fijos nativos seguros -->
             <div class="resumen-lista">
                 <div class="resumen-item">
                     <div class="emoji-circle">📅</div>
@@ -246,3 +238,10 @@
                     <div class="text-detail"><label>Comida elegida</label><span>¡Seleccionada! 💛</span></div>
                 </div>
                 <div class="resumen-item">
+                    <div class="emoji-circle" id="finalEmojiBebida">🥂</div>
+                    <div class="text-detail"><label>Bebida elegida</label><span>¡Seleccionada! 🥂</span></div>
+                </div>
+            </div>
+            
+            <div style="background: #ffe6a3; padding: 15px; border-radius: 12px; border: 2px solid #000; font-weight: bold; margin: 20px 0;">
+                💛 ¡Todo listo para vernos ese día! 💛
